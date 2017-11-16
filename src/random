@@ -1,0 +1,102 @@
+import React, { Component } from 'react';
+import './App.css';
+//import login from './login.js'
+
+
+//const ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
+
+class App extends React.Component {
+
+constructor(props) {
+    super(props);
+    this.handleClick = this.makeid.bind(this);
+    this.state = { random: '' };
+    this.isSelected =  false
+  }
+
+  handleLoginClick() {
+      this.setState({isSelected: true});
+    }
+
+  makeid() {
+      var text = "";
+      var possible = "abcdefghijklmnopqrstuvwxyz0123456789";
+
+      for (var i = 0; i < 4; i++)
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    console.log("HI")
+
+    this.setState({random: this.state.random = text})
+
+    }
+
+  render() {
+
+    const isSelected = this.state.isSelected;
+
+
+    return (
+
+
+      <div className="App">
+
+        <header className="App-header">
+
+          <h1 className="App-title">Welcome to Master mind</h1>
+        </header>
+
+
+        <div className="login-page">
+          <div className="form">
+             <form className="register-form">
+              <input type="text" placeholder="name"/>
+              <div>
+                <p>Lobby ID:</p>
+
+                <textarea readonly id="code-content" className="lobby-code" ></textarea>
+
+              </div>
+               <button>create</button>
+               <p className="message">Already registered? <a href="#">Sign In</a></p>
+
+
+            </form>
+
+            <form className="login-form">
+              <input type="text" placeholder="name"/>
+              <input type="text" placeholder="Lobby ID"/>
+              <button>login</button>
+
+              <p className="message">Need a new lobby? <a href="#" onClick={this.handleClick.bind(this)}>Create a lobby </a> </p>
+              <div>Lobby id: {this.state.random}</div>
+
+            </form>
+          </div>
+        </div>
+
+
+
+
+
+      </div>
+      //        <button onClick={this.makeid.bind(this)}>WTF?</button>
+      //                <div>The number is: {this.state.random}</div>
+
+    );
+  }
+
+//    ReactDOM.render(<App />,document.getElementById('code-content'));
+
+
+
+}
+
+
+
+
+
+
+
+
+
+export default App;
