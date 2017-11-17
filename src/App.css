@@ -131,6 +131,188 @@ body {
 
 
 
+
+
+
 .Game {
   text-align: center;
+
 }
+
+.Game .Button-Panel{
+   border: 1px solid black;
+   width: 5%;
+   right: 16%;
+   top: 17%;
+   height: 57%;
+   position: fixed;
+   padding-left: 1.5%;
+
+
+}
+.Game .Red {
+   display: block;
+   border:1px solid black;
+   background-color: #c61e0d;
+   width: 55px;
+   height: 55px;
+   padding: 6px 0px;
+   border-radius: 50%;
+   text-align: center;
+   box-shadow: 0 3px #000;
+}
+.Game .Red:hover {background-color:#e01e0b}
+
+
+.Game .Orange {
+   display: block;
+   border:1px solid black;
+   background-color: #e67e22;
+   width: 55px;
+   height: 55px;
+   padding: 6px 0px;
+   border-radius: 50%;
+   text-align: center;
+   box-shadow: 0 3px #000;
+}
+.Game .Orange:hover {background-color:#f28729}
+
+
+.Game .Yellow {
+   display: block;
+   border:1px solid black;
+   background-color: #f4d03f;
+   width: 55px;
+   height: 55px;
+   padding: 6px 0px;
+   border-radius: 50%;
+   text-align: center;
+   box-shadow: 0 3px #000;
+}
+.Game .Yellow:hover {background-color:#fcd849}
+
+
+.Game .Green {
+   display: block;
+   border:1px solid black;
+   background-color: #229954;
+   width: 55px;
+   height: 55px;
+   padding: 6px 0px;
+   border-radius: 50%;
+   text-align: center;
+   box-shadow: 0 3px #000;
+}
+.Game .Green:hover {background-color:#27a35b}
+
+
+.Game .Blue {
+   display: block;
+   border:1px solid black;
+   background-color: #2e86c1;
+   width: 55px;
+   height: 55px;
+   padding: 6px 0px;
+   border-radius: 50%;
+   text-align: center;
+   box-shadow: 0 3px #000;
+}
+.Game .Blue:hover {background-color:#3492d1}
+
+
+.Game .Purple {
+   display: block;
+   border:1px solid black;
+   background-color: #9b59b6;
+   width: 55px;
+   height: 55px;
+   padding: 6px 0px;
+   border-radius: 50%;
+   text-align: center;
+   box-shadow: 0 3px #000;
+}
+.Game .Purple:hover {background-color:#ac64c9}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.Game .Button-Input{
+   display: inline-block;
+
+   border: 1px solid black;
+
+   width: 40%;
+   padding: 1%;
+   height: 40rem;
+
+
+
+
+
+
+
+
+}
+
+.Game .White {
+    margin: 0.5rem;
+
+    border:1px solid black;
+    top: 50%;
+    width: 30px;
+    height: 30px;
+    padding: 6px 0px;
+    border-radius: 50%;
+
+}
+.Game .Red:hover {background-color:#e01e0b}
+/*
+.Game .Red {
+
+display: inline-block;
+
+   border: 1px solid black;
+   width: 5%;
+   right: 16%;
+   top: 17%;
+   height: 57%;
+   position: fixed;
+   padding-left: 1.5%;
+
+   border:1px solid black;
+   background-color: #fff;
+   width: 30px;
+   height: 30px;
+   padding: 6px 0px;
+   border-radius: 50%;
+   text-align: center;
+   box-shadow: 0 3px #000;
+
+
+  display: inline-block;
+  padding: 15px 25px;
+  font-size: 24px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+
+
+}
+*/
