@@ -9,61 +9,56 @@ class App extends React.Component {
 
   constructor(props){
    super(props);
-   this.state={inputfield: "no value"};
-   this.handleClick = this.handleClick.bind(this);
+   this.state={name: "no value", id: ""};
    this.updateInputValue = this.updateInputValue.bind(this);
-  }
-
-  handleClick(){
-   console.log("trying to add picture url");
-   console.log("value of input field : "+this.state.inputfield);
-   var js = this.performGetUserIDRequest();
-   js.then(function (response){
-       console.log("axios return : "+JSON.stringify(response));
-       console.log("user: "+ (response.data.userID));
-       console.log(this.props)
-       this.props.router.push("http://localhost:8080/game/"+JSON.stringify(response.data.userID));
-   })
-   .catch(function (error){
-        console.log(error);
-   });
-
-
   }
 
   updateInputValue(evt){
     //console.log("input field updated with "+evt.target.value);
-    this.state={inputfield: evt.target.value};
+    //this.state={inputfield: evt.target.value};
+    this.setState({name: evt.target.value})
 
   }
 
   performGetUserIDRequest(){
       console.log("performing get request")
-      console.log(this.state.inputfield)
-      return axios.get("http://localhost:8080/login/"+this.state.inputfield)
+      console.log(this.state.name)
+      return axios.get("http://localhost:8080/login/"+this.state.name)
   }
-//  performGetUserIDRequest(){
-//    console.log("performing get request")
-//    console.log(this.state.inputfield)
-//    var promise = axios.get("http://localhost:8080/login/"+this.state.inputfield)
-//        .then(function (response){
-//            console.log("axios return : "+JSON.stringify(response));
-//        })
-//        .catch(function (error){
-//            console.log(error);
-//        });
-//  }
-
 
   onNavigateGame(e){
-    e.preventDefault();
-    var name = this.state.inputfield;
-    if (name  == ""){
-      this.props.history.push("/game/Anonymous");
-    }
-    else {
-      this.props.history.push("/game/"+name);
-    }
+        e.preventDefault();
+        console.log("value of input field : "+this.state.name);
+        var js = this.performGetUserIDRequest();
+        js.then((response) => {
+           console.log("axios return : "+JSON.stringify(response));
+           console.log("user: "+ (response.data.userID));
+           //this.state.id = response.data.userID
+           this.setState({id: response.data.userID})
+           console.log(this.state.id)
+        }).then(() => {
+            console.log(this.state.id)
+            var name = this.state.inputfield;
+            if (name  == ""){
+              this.props.history.push("/game/Anonymous");
+            }
+            else {
+                console.log(this.props.history)
+//              this.props.history.push("/game/"+this.state.name+"/"+this.state.id);
+            }
+        })
+        .catch(function (error){
+            console.log(error);
+        });
+
+//        console.log(this.state.id)
+//        var name = this.state.inputfield;
+//        if (name  == ""){
+//          this.props.history.push("/game/Anonymous");
+//        }
+//        else {
+//          this.props.history.push("/game/"+this.state.id);
+//        }
 
 
   }
@@ -90,9 +85,7 @@ class App extends React.Component {
 
             <form className="login-form">
               <input type="text" placeholder="name" onChange={this.updateInputValue}/>
-              <input type="button" value="Play !" id="addpix" onClick={this.handleClick}/>
-
-              <button onClick ={ (e) => this.onNavigateGame(e)}> Play! </button>
+              <button onClick ={ (e) => this.onNavigateGame(e) }> Play! </button>
             </form>
           </div>
         </div>
