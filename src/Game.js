@@ -191,6 +191,7 @@ class Button extends React.Component{
                      <button type="button" id="2" className="White" style={{backgroundColor: color1}}> </button>
                      <button type="button" id="3" className="White" style={{backgroundColor: color2}}> </button>
                      <button type="button" id="4" className="White" style={{backgroundColor: color3}}> </button>
+                     <button className="button button6">Check</button>
                      </div>
 
                     </div>

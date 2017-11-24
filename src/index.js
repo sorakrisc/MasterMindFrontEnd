@@ -21,7 +21,7 @@ function MainApp(){
      <Router>
         <div>
           <Route path="/login" component={App} />
-          <Route path="/game/:name/:id" component={Game} />
+          <Route path="/game/:name" component={Game} />
           <Route path="/congrats/" component={Congrats} />
         </div>
     </Router>
