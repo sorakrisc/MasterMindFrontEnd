@@ -5,15 +5,16 @@ import { Router, Route, Switch, browserHistory} from 'react-router'
 import { Link } from 'react-router-dom';
 import axios from "axios"
 
+
 class App extends React.Component {
 
     constructor(props){
         super(props);
-        this.state={name: "no value", id: "", lobbyid: "", regform: "none", logform: "block", logClass: "login-form", regClass: "register-form"};
+        this.state={name: "no value", id: "", lobbyid: "", regform: false, logform: true, logClass: "login-form", regClass: "register-form", active: 0};
         this.updateInputValue = this.updateInputValue.bind(this);
         this.updateInputLobby = this.updateInputLobby.bind(this);
-        this.joinLobby = this.joinLobby.bind(this);
-        this.createLobby = this.createLobby.bind(this);
+
+        this.handleClick = this.handleClick.bind(this);
     }
 
     updateInputValue(evt){
@@ -54,23 +55,28 @@ class App extends React.Component {
             console.log(error);
         });
     }
-    createLobby(e){
-        e.preventDefault();
-        console.log("in create lobby funtion")
-        this.setState({logClass: "login-form hide", regClass: "register-form show"})
-    }
-    joinLobby(e){
-        e.preventDefault();
-        console.log("in join lobby")
-        this.setState({logClass: "login-form", regClass: "register-form"})
 
 
-    }
-//    animate(e){
-//
-//        const
-//    }
+  handleClick() {
+    this.setState({active: !this.state.active});
+  }
+  componentDidUpdate(){
+
+            if(this.state.logform && window.location.href =="http://localhost:3000/login#register-form" ){
+                this.setState({regClass: "register-form show", logform: false, regform: true, active: this.state.active+1})
+            }
+            else if (this.state.regform && window.location.href =="http://localhost:3000/login#login-form"){
+               this.setState({regClass: "register-form", logform: true, regform: false,active: this.state.active+1})
+            }
+
+
+  }
+  component
     render() {
+        //so when people access http://localhost:3000/login#register-form directly it make the register page visible
+        if(this.state.active == 0 &&this.state.logform && window.location.href =="http://localhost:3000/login#register-form" ){
+            this.setState({regClass: "register-form show", logform: false, regform: true, active: this.state.active+1})
+        }
         return (
               <div className="App">
 
@@ -80,21 +86,21 @@ class App extends React.Component {
 
                     <div className="login-page">
                         <div className="form" >
-                            <form  className={this.state.regClass} >
+                            <form  id="login-form" className={this.state.regClass} >
                                 <input type="text" placeholder="name"/>
                                 <div>
                                     <p>Lobby ID:</p>
                                     <textarea readOnly id="code-content" className="lobby-code" ></textarea>
                                 </div>
                                 <button>create</button>
-                                <p className="message">Got a lobby? <a onClick={(e)=>this.joinLobby(e)}>Join a lobby</a></p>
+                                <p className="message">Got a lobby? <a href="#login-form">Join a lobby</a></p>
                             </form>
 
-                            <form className={this.state.logClass}>
+                            <form id="register-form" className={this.state.logClass} >
                                 <input type="text" placeholder="name" onChange={this.updateInputValue}/>
                                 <input type="text" placeholder="lobby id" onChange={this.updateInputLobby}/>
                                 <button onClick ={ (e) => this.onNavigateGame(e) }> Play! </button>
-                                <p className="message">No lobby? <a onClick={(e) => this.createLobby(e)}>Create lobby</a></p>
+                                <p className="message">No lobby? <a href="#register-form" >Create lobby</a></p>
                             </form>
 
                         </div>

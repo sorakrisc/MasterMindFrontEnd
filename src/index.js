@@ -5,6 +5,7 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import Game from './Game';
 import Congrats from './Congrats'
+import Test from './test'
 
 // using CommonJS modules
 
@@ -23,6 +24,7 @@ function MainApp(){
           <Route path="/login" component={App} />
           <Route path="/game/:name" component={Game} />
           <Route path="/congrats/" component={Congrats} />
+          <Route path="/test" component={Test}/>
         </div>
     </Router>
     )
