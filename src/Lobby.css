@@ -1,0 +1,12 @@
+.react-countdown-clock{
+        z-index: 99;
+}
+
+.divClock{
+
+    position: relative;
+    top: 50%;
+    left: 13%;
+    width: 100px;
+    height: 100px;
+}

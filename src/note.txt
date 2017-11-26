@@ -1,0 +1,14 @@
+THIS IS AXIOS .then.then
+//        js.then((response) => {
+//            console.log("axios return : "+JSON.stringify(response));
+//            console.log("user: "+ (response.data.userID));
+//            //this.state.id = response.data.userID
+//            this.setState({id: response.data.userID})
+//            console.log(this.state.id)
+//        }).then(() => {
+//            console.log(this.state.id)
+//            this.props.history.push("/lobby/"+this.state.lobbyid+"/"+this.state.name);
+//
+//        }).catch(function (error) {
+//            console.log(error);
+//        });

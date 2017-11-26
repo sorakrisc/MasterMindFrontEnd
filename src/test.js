@@ -5,7 +5,7 @@ import { Router, Route, Switch, browserHistory} from 'react-router';
 
 
 
-class App extends React.Component {
+class test extends React.Component {
 
     render() {
         return (
@@ -16,4 +16,4 @@ class App extends React.Component {
     }
 }
 
-export default App;
+export default test;

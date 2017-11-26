@@ -16,7 +16,11 @@ class Game extends React.Component {
         return (
 
          <div className="Game">
-            <h1>Welcome to Master Mind Game, {this.props.match.params.name}</h1>
+             <header className="App-header">
+                 <h1 className="App-title">Welcome to Master mind, {this.props.match.params.name}</h1>
+             </header>
+
+
 
             <Button url = {this.props.match.params} history = {this.props.history}/>
 
@@ -209,7 +213,7 @@ class Button extends React.Component{
     render(){
 
         return (
-        <div>
+        <div style={{height:"25%"}}>
             <div className="Button-Panel">
                 <div className="Game2">
                     <p> </p>
