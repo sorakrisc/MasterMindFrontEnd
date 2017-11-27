@@ -6,9 +6,62 @@ import { Link } from 'react-router-dom';
 import axios from "axios"
 
 class Game extends React.Component {
+    constructor(props){
+        super(props);
+        this.state={secondsElapsed: 0};
+        this.tick = this.tick.bind(this);
+        this.onUnload = this.onUnload.bind(this);
+    }
+    tick() {
+        this.setState({secondsElapsed: this.state.secondsElapsed + 1});
+    }
+
+    onUnload(e) { // the method that will be used for both add and remove event
+        console.log("hellooww")
 
 
+        var js = axios.post("http://localhost:8080/myTimeElapsed/"+this.props.match.params.name+"/"+this.state.secondsElapsed)
 
+        var message = "Your confirmation message goes here.";
+        e = e || window.event;
+        // For IE and Firefox
+        if (e) {
+        e.returnValue = message;
+        }
+
+        // For Safari
+        return message;
+    }
+
+
+    componentDidMount() {
+        console.log("yoyo")
+        var js = axios.get("http://localhost:8080/isUserInTimeMap/"+this.props.match.params.name)
+        js.then((response) =>{
+            console.log(response.data.timeElapsed)
+            this.setState({secondsElapsed: response.data.timeElapsed});
+        }).catch(function (error){
+            console.log(error)
+        });
+        this.interval = setInterval(this.tick, 1000);
+        window.addEventListener("beforeunload", this.onUnload)
+    }
+
+    componentWillUnmount() {
+        console.log("heyhey")
+        alert("UNMOUNT")
+        clearInterval(this.interval);
+        window.removeEventListener("beforeunload", this.onUnload)
+    }
+    checkTimeUsed(){
+        var js = axios.get("http://localhost:8080/checkTimeUsed/"+this.props.match.params.name)
+
+        js.then((response) => {
+            this.setState({secondsElapsed:response.data.timeUsed})
+        }).catch(function (error){
+            console.log(error);
+        });
+    }
 
 
 
@@ -18,11 +71,12 @@ class Game extends React.Component {
          <div className="Game">
              <header className="App-header">
                  <h1 className="App-title">Welcome to Master mind, {this.props.match.params.name}</h1>
+                 <h2> Time Elapsed: {this.state.secondsElapsed}</h2>
              </header>
 
 
 
-            <Button url = {this.props.match.params} history = {this.props.history}/>
+            <Button url = {this.props.match.params} history = {this.props.history} time = {this.state.secondsElapsed}/>
 
 
          </div>
@@ -89,6 +143,12 @@ class Button extends React.Component{
     three(){
         this.setState({numClick: 3})
     }
+    performGetUserIDRequest(){
+        console.log("performing get request");
+        console.log(this.props.url.id)
+        console.log(this.props.url)
+        return axios.get("http://localhost:8080/ans/"+this.props.url.lobID+"?guess="+this.state.color0[0]+this.state.color1[0]+this.state.color2[0]+this.state.color3[0]+"&name="+this.props.url.name+"&timeElapsed="+this.props.time);
+    }
     check(e){
         e.preventDefault();
         console.log("trying to check answer");
@@ -99,9 +159,10 @@ class Button extends React.Component{
         js.then((response) => {
             console.log("axios return : "+JSON.stringify(response));
             console.log("user: "+ (response.data));
-            this.setState({white: response.data.white, red: response.data.red})
+            this.setState({white: response.data.white, red: response.data.red, checkCount: response.data.checkCount})
             console.log("white: "+this.state.white)
             console.log("red: "+this.state.red)
+            console.log("checkCOunt: "+ this.state.checkCount)
 
         }).then(() => {
             //change ans node
@@ -157,13 +218,6 @@ class Button extends React.Component{
             console.log(error);
         });
 
-    }
-
-    performGetUserIDRequest(){
-        console.log("performing get request");
-        console.log(this.props.url.id)
-        console.log(this.props.url)
-        return axios.get("http://localhost:8080/ans/"+this.props.url.lobID+"?guess="+this.state.color0[0]+this.state.color1[0]+this.state.color2[0]+this.state.color3[0]);
     }
 
     generatePastGuess(){

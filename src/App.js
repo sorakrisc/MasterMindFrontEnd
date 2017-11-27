@@ -56,8 +56,14 @@ class App extends React.Component {
     create(e){
         e.preventDefault();
         var js = axios.post("http://localhost:8080/create/"+this.state.generatedLobID+"/"+this.state.name)
-        js.then(()=>{
-            this.props.history.push("/lobby/"+this.state.generatedLobID+"/"+this.state.name);
+        js.then((response)=>{
+            if(response.data.nameStatus =="valid"){
+                this.props.history.push("/lobby/"+this.state.generatedLobID+"/"+this.state.name);
+            }
+            else{
+                alert("Name take (boring name D:)")
+            }
+
         }).catch(function (error){
             console.log(error);
         });
