@@ -74,7 +74,7 @@ class Button extends React.Component{
             ansColor1: "grey",
             ansColor2: "grey",
             ansColor3: "grey",
-            checkCount: 0
+
         })
     }
     zero(){
@@ -94,6 +94,7 @@ class Button extends React.Component{
         console.log("trying to check answer");
         console.log("value of input field : "+this.state.color0);
         this.setState({checkCount: this.state.checkCount+1})
+        console.log(this.state.checkCount)
         var js = this.performGetUserIDRequest();
         js.then((response) => {
             console.log("axios return : "+JSON.stringify(response));
@@ -162,7 +163,7 @@ class Button extends React.Component{
         console.log("performing get request");
         console.log(this.props.url.id)
         console.log(this.props.url)
-        return axios.get("http://localhost:8080/ans/"+this.props.url.name+"?guess="+this.state.color0[0]+this.state.color1[0]+this.state.color2[0]+this.state.color3[0]);
+        return axios.get("http://localhost:8080/ans/"+this.props.url.lobID+"?guess="+this.state.color0[0]+this.state.color1[0]+this.state.color2[0]+this.state.color3[0]);
     }
 
     generatePastGuess(){
@@ -191,11 +192,11 @@ class Button extends React.Component{
                        </div>
                      </div>
                      <div>
-                     <button type="button" id="1" className="White" style={{backgroundColor: color0}}> </button>
-                     <button type="button" id="2" className="White" style={{backgroundColor: color1}}> </button>
-                     <button type="button" id="3" className="White" style={{backgroundColor: color2}}> </button>
-                     <button type="button" id="4" className="White" style={{backgroundColor: color3}}> </button>
-                     <button className="button button6">Check</button>
+                     <button type="button" id="1" className="WhiteNoHover" style={{backgroundColor: color0}}> </button>
+                     <button type="button" id="2" className="WhiteNoHover" style={{backgroundColor: color1}}> </button>
+                     <button type="button" id="3" className="WhiteNoHover" style={{backgroundColor: color2}}> </button>
+                     <button type="button" id="4" className="WhiteNoHover" style={{backgroundColor: color3}}> </button>
+                     <button className="button button6">#{this.state.checkCount}</button>
                      </div>
 
                     </div>

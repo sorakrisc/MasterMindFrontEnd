@@ -10,7 +10,7 @@ class App extends React.Component {
 
     constructor(props){
         super(props);
-        this.state={name:"Anonymous"+Math.floor(Math.random()*1000), id: "", lobbyid: "", regform: false, logform: true, logClass: "login-form", regClass: "register-form", active: 0, generatedLobID:""};
+        this.state={name:"Anonymous"+Math.floor(Math.random()*1000), id: "", lobbyid: "", regform: false, logform: true, logClass: "login-form", regClass: "register-form", active: 0, generatedLobID:"", randomLobStatus:false};
         this.updateInputValue = this.updateInputValue.bind(this);
         this.updateInputLobby = this.updateInputLobby.bind(this);
         this.makeLobbyID = this.makeLobbyID.bind(this);
@@ -37,11 +37,15 @@ class App extends React.Component {
             var js = axios.post("http://localhost:8080/join/"+this.state.lobbyid+"/"+this.state.name);
             js.then((response) => {
                 console.log(response)
-                if(response.data.lobStatus == "valid"){
-                    this.props.history.push("/lobby/"+this.state.lobbyid+"/"+this.state.name);
+                if(response.data.lobStatus == "invalid"){
+                    alert("Room not found D;")
+                }
+                if(response.data.nameStatus =="invalid"){
+                    alert("Name taken (boring name D:)")
                 }
                 else{
-                    alert("Room not found D;")
+                    this.props.history.push("/lobby/"+this.state.lobbyid+"/"+this.state.name);
+
                 }
             }).catch(function (error) {
                 console.log(error);
@@ -63,13 +67,26 @@ class App extends React.Component {
     makeLobbyID(){
         var vowel ="aeiou";
         var consonant = "bcdfghjklmnpqrstvwxyz";
-        return consonant[Math.floor(Math.random()*21)]+vowel[Math.floor(Math.random()*5)]+consonant[Math.floor(Math.random()*21)]+consonant[Math.floor(Math.random()*21)]+vowel[Math.floor(Math.random()*5)]+consonant[Math.floor(Math.random()*21)];
+        var randomLobID = consonant[Math.floor(Math.random()*21)]+vowel[Math.floor(Math.random()*5)]+consonant[Math.floor(Math.random()*21)]+consonant[Math.floor(Math.random()*21)]+vowel[Math.floor(Math.random()*5)]+consonant[Math.floor(Math.random()*21)];
+        var js = axios.get("http://localhost:8080/isLobIDEmpty/"+randomLobID)
+        js.then((response)=>{
+            if(response.data.isLobIDEmpty=="true"){
+                this.setState({randomLobStatus: true, generatedLobID: randomLobID})
+            }
+            else{
+
+                return this.makeLobbyID()
+            }
+        }).catch(function(error){
+            console.log(error);
+        });
     }
 
     componentDidUpdate(){
 
         if(this.state.logform && window.location.href.indexOf("#register-form") !== -1  ){
-            this.setState({regClass: "register-form show", logform: false, regform: true, active: this.state.active+1, generatedLobID: this.makeLobbyID()})
+            this.setState({regClass: "register-form show", logform: false, regform: true, active: this.state.active+1})
+            this.makeLobbyID()
         }
         else if (this.state.regform && window.location.href.indexOf("#login-form") !== -1 ){
             this.setState({regClass: "register-form", logform: true, regform: false,active: this.state.active+1})
@@ -81,7 +98,8 @@ class App extends React.Component {
     render() {
         //so when people access http://localhost:3000/login#register-form directly it make the register page visible
         if(this.state.active == 0 &&this.state.logform && window.location.href.indexOf("#register-form") !== -1 ){
-            this.setState({regClass: "register-form show", logform: false, regform: true, active: this.state.active+1, generatedLobID: this.makeLobbyID()})
+            this.setState({regClass: "register-form show", logform: false, regform: true, active: this.state.active+1})
+            this.makeLobbyID()
         }
         return (
             <div className="App">

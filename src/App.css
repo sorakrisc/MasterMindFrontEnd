@@ -242,7 +242,7 @@ body {
    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
 
-.Game .White {
+.Game .WhiteNoHover {
     margin: 0.5rem;
     border:1px solid black;
     top: 50%;
@@ -252,21 +252,36 @@ body {
     border-radius: 50%;
 }
 
+.Game .White {
+    margin: 0.5rem;
+    border:1px solid black;
+    top: 50%;
+    width: 30px;
+    height: 30px;
+    padding: 6px 0px;
+    border-radius: 50%;
+}
+.Game .White:hover{border:1px solid gold;}
+
 .Game .Red:hover {background-color:#e01e0b}
 
 .Game .button6 {
-     visibility: hidden;
+    height: 20px;
+    width: 50.830px;
+    border: 2px solid #519a86;
+    background-color: #519a86;
 }
 
 .Game .button5 {
-    background-color: white;
-    color: black;
+    background-color:  White;
+    color: #555555;
     border: 2px solid #555555;
 }
 
 .Game .button5:hover {
-    background-color: #555555;
-    color: white;
+    background-color: #76b852;
+    color: #555555;
+
 }
 
 .Game .fourth-face, .sixth-face {
