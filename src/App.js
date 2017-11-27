@@ -53,7 +53,7 @@ class App extends React.Component {
         e.preventDefault();
         var js = axios.post("http://localhost:8080/create/"+this.state.generatedLobID+"/"+this.state.name)
         js.then(()=>{
-            this.props.history.push("/lobby/"+this.state.lobbyid+"/"+this.state.name);
+            this.props.history.push("/lobby/"+this.state.generatedLobID+"/"+this.state.name);
         }).catch(function (error){
             console.log(error);
         });
@@ -94,7 +94,7 @@ class App extends React.Component {
                     <div className="form" >
 
                         <form  id="login-form" className={this.state.regClass} >
-                            <input type="text" placeholder="name"/>
+                            <input type="text" placeholder="name" onChange={this.updateInputValue}/>
                             <div>
                                 <p>Your Lobby ID: {this.state.generatedLobID}</p>
 
