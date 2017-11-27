@@ -49,7 +49,6 @@ class Game extends React.Component {
 
     componentWillUnmount() {
         console.log("heyhey")
-        alert("UNMOUNT")
         clearInterval(this.interval);
         window.removeEventListener("beforeunload", this.onUnload)
     }
@@ -172,7 +171,8 @@ class Button extends React.Component{
                 this.setState({ansColor2: "Red"});
                 this.setState({ansColor3: "Red"});
                 console.log(this.props.history)
-                this.props.history.push("/congrats/");
+                var wonjs = axios.post("http://localhost:8080/updateWinner/"+this.props.url.lobID+"/"+this.props.url.name+"/"+this.props.time)
+                this.props.history.push("/congrats/"+this.props.url.lobID+"/"+this.props.url.name);
 
             }
             else if( this.state.red == 3){
