@@ -3,7 +3,7 @@ import './App.css';
 import Game from './Game.js'
 import { Router, Route, Switch, browserHistory} from 'react-router'
 import { Link } from 'react-router-dom';
-import axios from "axios"
+import axios from "./AxiosConfig"
 
 
 class App extends React.Component {
@@ -55,7 +55,7 @@ class App extends React.Component {
 
     create(e){
         e.preventDefault();
-        var js = axios.post("http://localhost:8080/create/"+this.state.generatedLobID+"/"+this.state.name)
+        var js = axios.post("/create/"+this.state.generatedLobID+"/"+this.state.name)
         js.then((response)=>{
             if(response.data.nameStatus =="valid"){
                 this.props.history.push("/lobby/"+this.state.generatedLobID+"/"+this.state.name);
@@ -74,7 +74,7 @@ class App extends React.Component {
         var vowel ="aeiou";
         var consonant = "bcdfghjklmnpqrstvwxyz";
         var randomLobID = consonant[Math.floor(Math.random()*21)]+vowel[Math.floor(Math.random()*5)]+consonant[Math.floor(Math.random()*21)]+consonant[Math.floor(Math.random()*21)]+vowel[Math.floor(Math.random()*5)]+consonant[Math.floor(Math.random()*21)];
-        var js = axios.get("http://localhost:8080/isLobIDEmpty/"+randomLobID)
+        var js = axios.get("/isLobIDEmpty/"+randomLobID)
         js.then((response)=>{
             if(response.data.isLobIDEmpty=="true"){
                 this.setState({randomLobStatus: true, generatedLobID: randomLobID})
@@ -100,13 +100,17 @@ class App extends React.Component {
 
 
     }
-
+    componentDidMount(){
+        console.log("component did mount")
+        document.body.style.overflow = "hidden"
+    }
     render() {
         //so when people access http://localhost:3000/login#register-form directly it make the register page visible
         if(this.state.active == 0 &&this.state.logform && window.location.href.indexOf("#register-form") !== -1 ){
             this.setState({regClass: "register-form show", logform: false, regform: true, active: this.state.active+1})
             this.makeLobbyID()
         }
+
         return (
             <div className="App">
 

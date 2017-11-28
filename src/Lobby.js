@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import { Router, Route, Switch, browserHistory} from 'react-router';
 import './Lobby.css';
-import axios from "axios"
+import axios from "./AxiosConfig"
 
 import ReactCountdownClock from 'react-countdown-clock'
 
@@ -41,7 +41,7 @@ class Lobby extends React.Component {
     }
     tick() {
         this.setState({secondsElapsed: this.state.secondsElapsed + 1});
-        var js = axios.get("http://localhost:8080/players/"+this.props.match.params.lobID);
+        var js = axios.get("/players/"+this.props.match.params.lobID);
         js.then((response) => {
             var playerLst = response.data.playerLst
             this.createPastGuess(playerLst)
@@ -49,7 +49,7 @@ class Lobby extends React.Component {
         }).catch(function (error) {
             console.log(error);
         });
-        var js = axios.get("http://localhost:8080/gamestatus/"+this.props.match.params.lobID);
+        var js = axios.get("/gamestatus/"+this.props.match.params.lobID);
         js.then((response) => {
             var gameStatus= response.data.gameStatus
             console.log(gameStatus)
@@ -74,7 +74,7 @@ class Lobby extends React.Component {
     unpause(e){
         console.log("HII")
         this.setState({pausedStatus: false})
-        var js = axios.post("http://localhost:8080/gamestatusStart/"+this.props.match.params.lobID)
+        var js = axios.post("/gamestatusStart/"+this.props.match.params.lobID)
 
         setTimeout(function() {  clearInterval(this.interval)}.bind(this), 10000);
         setTimeout(function(){ this.props.history.push("/game/"+this.props.match.params.lobID+"/"+this.props.match.params.name) }.bind(this) , 10000);

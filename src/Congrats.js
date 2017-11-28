@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import ReactDom from 'react-dom';
-import axios from "axios"
+import axios from "./AxiosConfig"
 
 class Congrats extends React.Component {
     constructor(props){
@@ -34,9 +34,10 @@ class Congrats extends React.Component {
       this.setState({itemArray: item})
     }
     tick() {
-
-        var js = axios.get("http://localhost:8080/winnerLst/"+this.props.match.params.lobID);
+        console.log("in tick")
+        var js = axios.get("/winnerLst/"+this.props.match.params.lobID);
         js.then((response) => {
+            console.log(response.data.winnerLst)
             var winnerLst = response.data.winnerLst
             this.createPastGuess(winnerLst)
 

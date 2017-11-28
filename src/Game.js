@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import './App.css';
+import './Game.css';
 import Congrats from './Congrats.js'
 import { Router, Route, Switch, browserHistory} from 'react-router'
 import { Link } from 'react-router-dom';
-import axios from "axios"
+import axios from "./AxiosConfig"
 
 class Game extends React.Component {
+
     constructor(props){
         super(props);
         this.state={secondsElapsed: 0};
@@ -20,7 +21,7 @@ class Game extends React.Component {
         console.log("hellooww")
 
 
-        var js = axios.post("http://localhost:8080/myTimeElapsed/"+this.props.match.params.name+"/"+this.state.secondsElapsed)
+        var js = axios.post("/myTimeElapsed/"+this.props.match.params.name+"/"+this.state.secondsElapsed)
 
         var message = "Your confirmation message goes here.";
         e = e || window.event;
@@ -36,7 +37,8 @@ class Game extends React.Component {
 
     componentDidMount() {
         console.log("yoyo")
-        var js = axios.get("http://localhost:8080/isUserInTimeMap/"+this.props.match.params.name)
+        document.body.style.overflow = "scroll"
+        var js = axios.get("/isUserInTimeMap/"+this.props.match.params.name)
         js.then((response) =>{
             console.log(response.data.timeElapsed)
             this.setState({secondsElapsed: response.data.timeElapsed});
@@ -53,7 +55,7 @@ class Game extends React.Component {
         window.removeEventListener("beforeunload", this.onUnload)
     }
     checkTimeUsed(){
-        var js = axios.get("http://localhost:8080/checkTimeUsed/"+this.props.match.params.name)
+        var js = axios.get("/checkTimeUsed/"+this.props.match.params.name)
 
         js.then((response) => {
             this.setState({secondsElapsed:response.data.timeUsed})
@@ -67,7 +69,7 @@ class Game extends React.Component {
     render(){
         return (
 
-         <div className="Game">
+         <div className="Game" style={{overflow: "scroll"}}>
              <header className="App-header">
                  <h1 className="App-title">Welcome to Master mind, {this.props.match.params.name}</h1>
                  <h2> Time Elapsed: {this.state.secondsElapsed}</h2>
@@ -146,7 +148,7 @@ class Button extends React.Component{
         console.log("performing get request");
         console.log(this.props.url.id)
         console.log(this.props.url)
-        return axios.get("http://localhost:8080/ans/"+this.props.url.lobID+"?guess="+this.state.color0[0]+this.state.color1[0]+this.state.color2[0]+this.state.color3[0]+"&name="+this.props.url.name+"&timeElapsed="+this.props.time);
+        return axios.get("/ans/"+this.props.url.lobID+"?guess="+this.state.color0[0]+this.state.color1[0]+this.state.color2[0]+this.state.color3[0]+"&name="+this.props.url.name+"&timeElapsed="+this.props.time);
     }
     check(e){
         e.preventDefault();
@@ -171,7 +173,7 @@ class Button extends React.Component{
                 this.setState({ansColor2: "Red"});
                 this.setState({ansColor3: "Red"});
                 console.log(this.props.history)
-                var wonjs = axios.post("http://localhost:8080/updateWinner/"+this.props.url.lobID+"/"+this.props.url.name+"/"+this.props.time)
+                var wonjs = axios.post("/updateWinner/"+this.props.url.lobID+"/"+this.props.url.name+"/"+this.props.time)
                 this.props.history.push("/congrats/"+this.props.url.lobID+"/"+this.props.url.name);
 
             }
