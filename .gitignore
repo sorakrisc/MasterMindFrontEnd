@@ -47,3 +47,11 @@ chrome-user-data
 .vscode
 *.swp
 *.swo
+
+# intellij
+*.eml
+*.iml
+*.ipr
+*.iws
+.*.sw?
+.idea
