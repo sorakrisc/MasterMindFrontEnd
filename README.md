@@ -24,6 +24,25 @@ $ yarn start
 
 ```
 
+## Project Structure ##
+
+```
+|-src                                       # Code in here
+|  |-App.css
+|  |-Game.css                               ##################
+|  |-Congrats.css                           # All the styles #
+|  |-Lobby.css                              ##################
+|  |-index.css
+|  |
+|  |-App.js
+|  |-Game.js                                ##############
+|  |-Congrats.js                            # All the js #
+|  |-Lobby.js                               ##############
+|  |-index.js
+
+
+```
+
 If the browser is not starting or the page is empty go to change the url http://localhost:3000/login
 
 Enjoy
