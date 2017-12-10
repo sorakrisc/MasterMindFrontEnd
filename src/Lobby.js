@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './App.css';
-import { Router, Route, Switch, browserHistory} from 'react-router';
 import './Lobby.css';
 import axios from "./AxiosConfig"
 
@@ -9,7 +8,7 @@ import ReactCountdownClock from 'react-countdown-clock'
 class Lobby extends React.Component {
     constructor(props){
         super(props);
-        this.state={secondsElapsed: 0, itemArray:[], playersInLob:0, pausedStatus: true, initialStartTime: 10};
+        this.state={itemArray:[], playersInLob:0, pausedStatus: true, initialStartTime: 10};
 
 
         this.tick = this.tick.bind(this);
@@ -40,7 +39,6 @@ class Lobby extends React.Component {
       this.setState({itemArray: item})
     }
     tick() {
-        this.setState({secondsElapsed: this.state.secondsElapsed + 1});
         var js = axios.get("/players/"+this.props.match.params.lobID);
         js.then((response) => {
             var playerLst = response.data.playerLst
@@ -49,11 +47,10 @@ class Lobby extends React.Component {
         }).catch(function (error) {
             console.log(error);
         });
-        var js = axios.get("/gamestatus/"+this.props.match.params.lobID);
-        js.then((response) => {
+        var js2 = axios.get("/gamestatus/"+this.props.match.params.lobID);
+        js2.then((response) => {
             var gameStatus= response.data.gameStatus
-            console.log(gameStatus)
-            if (gameStatus=="Started"){
+            if (gameStatus==="Started"){
                 this.setState({pausedStatus: false, initialStartTime: 5})
                 setTimeout(function() {  clearInterval(this.interval)}.bind(this), 10000);
                 setTimeout(function(){ this.props.history.push("/game/"+this.props.match.params.lobID+"/"+this.props.match.params.name) }.bind(this) , 10000);
@@ -64,33 +61,24 @@ class Lobby extends React.Component {
 
     }
     componentDidMount() {
-        console.log("yoyo")
         this.interval = setInterval(this.tick, 1000);
     }
     componentWillUnmount() {
-        console.log("heyhey")
         clearInterval(this.interval);
     }
     unpause(e){
-        console.log("HII")
         this.setState({pausedStatus: false})
-        var js = axios.post("/gamestatusStart/"+this.props.match.params.lobID)
+        axios.post("/gamestatusStart/"+this.props.match.params.lobID)
 
         setTimeout(function() {  clearInterval(this.interval)}.bind(this), 10000);
         setTimeout(function(){ this.props.history.push("/game/"+this.props.match.params.lobID+"/"+this.props.match.params.name) }.bind(this) , 10000);
     }
 
-    redirectGamePage(){
-        console.log("WHY AM I HERE")
-
-//        this.props.router.push('/some/location');
-    }
     render() {
 
         return (
             <div>
                 <header className="App-header">
-                    {this.state.secondsElapsed}
                     <h1 style={{"textAlign": "center"}}className="App-title">Welcome to Master mind, {this.props.match.params.name}</h1>
                 </header>
 

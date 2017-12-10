@@ -12,9 +12,6 @@ import Lobby from './Lobby'
 import {
   BrowserRouter as Router,
   Route,
-  Link,
-  Redirect,
-  withRouter,
 } from 'react-router-dom'
 
 function MainApp(){

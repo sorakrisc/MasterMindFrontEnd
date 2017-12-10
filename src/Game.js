@@ -1,8 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './Game.css';
-import Congrats from './Congrats.js'
-import { Router, Route, Switch, browserHistory} from 'react-router'
-import { Link } from 'react-router-dom';
 import axios from "./AxiosConfig"
 
 class Game extends React.Component {
@@ -18,10 +15,7 @@ class Game extends React.Component {
     }
 
     onUnload(e) { // the method that will be used for both add and remove event
-        console.log("hellooww")
-
-
-        var js = axios.post("/myTimeElapsed/"+this.props.match.params.name+"/"+this.state.secondsElapsed)
+        axios.post("/myTimeElapsed/"+this.props.match.params.name+"/"+this.state.secondsElapsed)
 
         var message = "Your confirmation message goes here.";
         e = e || window.event;
@@ -36,11 +30,9 @@ class Game extends React.Component {
 
 
     componentDidMount() {
-        console.log("yoyo")
         document.body.style.overflow = "scroll"
         var js = axios.get("/isUserInTimeMap/"+this.props.match.params.name)
         js.then((response) =>{
-            console.log(response.data.timeElapsed)
             this.setState({secondsElapsed: response.data.timeElapsed});
         }).catch(function (error){
             console.log(error)
@@ -50,7 +42,6 @@ class Game extends React.Component {
     }
 
     componentWillUnmount() {
-        console.log("heyhey")
         clearInterval(this.interval);
         window.removeEventListener("beforeunload", this.onUnload)
     }
@@ -95,8 +86,8 @@ class Button extends React.Component{
             color1: "White",
             color2: "White",
             color3: "White",
-            white: 0,
-            red: 0,
+            white: "0",
+            red: "0",
             ansColor0: "grey",
             ansColor1: "grey",
             ansColor2: "grey",
@@ -109,10 +100,10 @@ class Button extends React.Component{
 
     changeColor(color){
         var numClick = this.state.numClick%4;
-        if (numClick==0) this.setState({color0: color})
-        else if (numClick==1) this.setState({color1: color})
-        else if (numClick==2) this.setState({color2: color})
-        else if (numClick==3) this.setState({color3: color})
+        if (numClick===0) this.setState({color0: color})
+        else if (numClick===1) this.setState({color1: color})
+        else if (numClick===2) this.setState({color2: color})
+        else if (numClick===3) this.setState({color3: color})
         this.setState({numClick: this.state.numClick+1});
     }
 
@@ -144,87 +135,79 @@ class Button extends React.Component{
     three(){
         this.setState({numClick: 3})
     }
-    performGetUserIDRequest(){
-        console.log("performing get request");
-        console.log(this.props.url.id)
-        console.log(this.props.url)
-        return axios.get("/ans/"+this.props.url.lobID+"?guess="+this.state.color0[0]+this.state.color1[0]+this.state.color2[0]+this.state.color3[0]+"&name="+this.props.url.name+"&timeElapsed="+this.props.time);
+    performGetUserIDRequest(ans){
+        return axios.get("/ans/"+this.props.url.lobID+"?guess="+ans+"&name="+this.props.url.name+"&timeElapsed="+this.props.time);
     }
     check(e){
         e.preventDefault();
-        console.log("trying to check answer");
-        console.log("value of input field : "+this.state.color0);
-        this.setState({checkCount: this.state.checkCount+1})
-        console.log(this.state.checkCount)
-        var js = this.performGetUserIDRequest();
-        js.then((response) => {
-            console.log("axios return : "+JSON.stringify(response));
-            console.log("user: "+ (response.data));
-            this.setState({white: response.data.white, red: response.data.red, checkCount: response.data.checkCount})
-            console.log("white: "+this.state.white)
-            console.log("red: "+this.state.red)
-            console.log("checkCOunt: "+ this.state.checkCount)
+        var ans = this.state.color0[0]+this.state.color1[0]+this.state.color2[0]+this.state.color3[0]
+        if(ans.indexOf("W")!== -1){
+            alert("GUESS INCOMPLETE! DON'T CHEAT!")
+        }
+        else{
+            this.setState({checkCount: this.state.checkCount+1})
+            var js = this.performGetUserIDRequest(ans);
+            js.then((response) => {
+                this.setState({white: response.data.white, red: response.data.red, checkCount: response.data.checkCount})
+            }).then(() => {
+                //change ans node
+                var red = this.state.red
+                var white = this.state.white
+                if (red === "4"){
+                    this.setState({ansColor0: "Red"});
+                    this.setState({ansColor1: "Red"});
+                    this.setState({ansColor2: "Red"});
+                    this.setState({ansColor3: "Red"});
+                    axios.post("/updateWinner/"+this.props.url.lobID+"/"+this.props.url.name+"/"+this.props.time)
+                    this.props.history.push("/congrats/"+this.props.url.lobID+"/"+this.props.url.name);
 
-        }).then(() => {
-            //change ans node
-            if (this.state.red == 4){
-                this.setState({ansColor0: "Red"});
-                this.setState({ansColor1: "Red"});
-                this.setState({ansColor2: "Red"});
-                this.setState({ansColor3: "Red"});
-                console.log(this.props.history)
-                var wonjs = axios.post("/updateWinner/"+this.props.url.lobID+"/"+this.props.url.name+"/"+this.props.time)
-                this.props.history.push("/congrats/"+this.props.url.lobID+"/"+this.props.url.name);
+                }
+                else if( red === "3"){
+                    this.setState({ansColor0: "Red"});
+                    this.setState({ansColor1: "Red"});
+                    this.setState({ansColor2: "Red"});
 
-            }
-            else if( this.state.red == 3){
-                this.setState({ansColor0: "Red"});
-                this.setState({ansColor1: "Red"});
-                this.setState({ansColor2: "Red"});
-
-            }
-            else if( this.state.red == 2){
-                this.setState({ansColor0: "Red"});
-                this.setState({ansColor1: "Red"});
+                }
+                else if( red === "2"){
+                    this.setState({ansColor0: "Red"});
+                    this.setState({ansColor1: "Red"});
 
 
-            }
-            else if( this.state.red == 1){
-               this.setState({ansColor0: "Red"});
-            }
+                }
+                else if( red === "1"){
+                   this.setState({ansColor0: "Red"});
+                }
 
-            if (this.state.white == 1){
-                this.setState({ansColor3: "White"})
-            }
+                if (white === "1"){
+                    this.setState({ansColor3: "White"})
+                }
 
-            else if (this.state.white == 2){
-                this.setState({ansColor2: "White"})
-                this.setState({ansColor3: "White"})
-            }
+                else if (white === "2"){
+                    this.setState({ansColor2: "White"})
+                    this.setState({ansColor3: "White"})
+                }
 
-            else if (this.state.white == 3){
-                this.setState({ansColor1: "White"})
-                this.setState({ansColor2: "White"})
-                this.setState({ansColor3: "White"})
-            }
-            else if (this.state.white == 4){
-                this.setState({ansColor0: "White"})
-                this.setState({ansColor1: "White"})
-                this.setState({ansColor2: "White"})
-                this.setState({ansColor3: "White"})
-            }
-            this.createPastGuess();
-            this.clear();
-        })
-        .catch(function (error){
-            console.log(error);
-        });
-
+                else if (white === "3"){
+                    this.setState({ansColor1: "White"})
+                    this.setState({ansColor2: "White"})
+                    this.setState({ansColor3: "White"})
+                }
+                else if (white === "4"){
+                    this.setState({ansColor0: "White"})
+                    this.setState({ansColor1: "White"})
+                    this.setState({ansColor2: "White"})
+                    this.setState({ansColor3: "White"})
+                }
+                this.createPastGuess();
+                this.clear();
+            })
+            .catch(function (error){
+                console.log(error);
+            });
+        }
     }
 
     generatePastGuess(){
-
-        console.log("inside test function")
         const ansColor0 = this.state.ansColor0
         const ansColor1 = this.state.ansColor1
         const ansColor2 = this.state.ansColor2
