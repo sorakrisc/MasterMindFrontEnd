@@ -45,4 +45,6 @@ $ yarn start
 
 If the browser is not starting or the page is empty go to change the url http://localhost:3000/login
 
+By Kanokporn Pringpayong and Sorakris Chaladlamsakul
+
 Enjoy
